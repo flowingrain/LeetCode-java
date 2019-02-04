@@ -36,12 +36,12 @@ public class Tree {
         return makeBinaryTreeByArray(array,0);
     }
 
-    public String printStack(Stack stack){
+    public String printStack(LinkedList stack){
         StringBuilder sb=new StringBuilder();
-        Stack temp1=(Stack)stack.clone();
-        while(!temp1.isEmpty()){
-            TreeNode tn=(TreeNode)temp1.pop();
-            if(tn.val!=null)
+        System.out.println(stack.size()+"***");
+        for(int i=0;i<stack.size();i++){
+            TreeNode tn=(TreeNode)stack.get(i);
+            if(tn!=null)
                 sb.append(tn.val+"\t");
         }
         return sb.reverse().toString();
@@ -92,17 +92,18 @@ public class Tree {
     }
 
     public void DFS(TreeNode root){
-        Stack stack=new Stack();
+        LinkedList stack=new LinkedList();
         stack.push(root);
         while(!stack.isEmpty()){
             TreeNode node=(TreeNode)stack.pop();
-            System.out.println(node.val);
-            if(node.val!=null&&node.left==null&&node.right==null)//叶子节点
-                printStack(stack);
-            if(node.left!=null)
+            if(node!=null){
+                System.out.print(node.val+"\t");
+                if(node.left==null&&node.right==null)//叶子节点
+                    System.out.println(printStack(stack));
                 stack.push(node.right);
-            if(node.right!=null)
+                System.out.println(stack.size()+"\\\\");
                 stack.push(node.left);
+            }
         }
     }
    /* public void printTree(TreeNode root){//输出包含层次结构和相对位置
