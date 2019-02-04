@@ -1,8 +1,5 @@
 package LeetCode;
 
-import java.util.LinkedList;
-import java.util.Stack;
-
 public class L235_LowestCommonAncestorOfABinarySearchTree {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {//返回最低公共父节点，不是公共序列
         if(p.val<root.val&&q.val<root.val){
