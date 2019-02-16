@@ -31,7 +31,7 @@ public class L5_LongestPalindromicSubstring {
         //return s.substring((resCenter - resLen) / 2, resLen - 1);//resLen-1是原串中最长回文子串的长度，不是最右端下标
         return s.substring((resCenter - resLen) / 2, (resCenter +resLen) /2-1);
     }*/
-   private int lo, maxLen;
+    private int lo, maxLen;
     private void extendPalindrome(String s, int j, int k) {//以j、k为中心的回文串的最大长度
         // loop until meet invalid match
         while (j >= 0 && k < s.length() && s.charAt(j) == s.charAt(k)) {
