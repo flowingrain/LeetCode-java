@@ -14,13 +14,14 @@ public class Tree {
         else
             return false;
     }
-    public TreeNode makeBinaryTreeByArray(Integer[] array,int index){
+    /*public TreeNode makeBinaryTreeByArray(Integer[] array,int index){
+        //对{1,null,2,3}不可行。根节点左子树空，第三行就不能再加几个null
         if(index<array.length){
             TreeNode t;
             if(array[index]!=null){//index范围内也可以为null
                 t=new TreeNode(array[index]);
                 array[index]=0;
-                t.left=makeBinaryTreeByArray(array,index*2+1);
+                t.left=makeBinaryTreeByArray(array,index*2+1);//对全二叉树成立
                 t.right=makeBinaryTreeByArray(array,index*2+2);
                 return t;
             }
@@ -28,12 +29,46 @@ public class Tree {
                 return null;
         }else
             return null;
-    }
-    public TreeNode Tree(Integer[] array){
-        return makeBinaryTreeByArray(array,0);
-    }
+    }*/
+
     public TreeNode buildTree(Integer[] array){
-        return makeBinaryTreeByArray(array,0);
+        TreeNode root=new TreeNode(array[0]);//假设array[0]不为null
+        Queue<TreeNode> queue=new LinkedList<TreeNode>();
+        /*
+        add        增加一个元索                     如果队列已满，则抛出一个IIIegaISlabEepeplian异常
+        remove   移除并返回队列头部的元素    如果队列为空，则抛出一个NoSuchElementException异常
+        element  返回队列头部的元素             如果队列为空，则抛出一个NoSuchElementException异常
+        offer       添加一个元素并返回true       如果队列已满，则返回false
+        poll         移除并返问队列头部的元素    如果队列为空，则返回null
+        peek       返回队列头部的元素             如果队列为空，则返回null
+        put         添加一个元素                      如果队列满，则阻塞
+        take        移除并返回队列头部的元素     如果队列为空，则阻塞
+         */
+        queue.offer(root);
+        int count=0,len=array.length;
+        //System.out.println(len);
+        while(!queue.isEmpty()){
+            TreeNode temp=queue.poll();
+            if(temp!=null){
+                if(count+1<len){
+                    if(array[count+1]==null)//如果TreeNode的构造函数接收的参数为Integer，则可以省去此处if else
+                        temp.left=null;
+                    else
+                        temp.left=new TreeNode(array[count+1]);
+                    count++;
+                    queue.offer(temp.left);
+                }
+                if(count+1<len) {
+                    if(array[count+1]==null)
+                        temp.right=null;
+                    else
+                        temp.right = new TreeNode(array[count+1]);
+                    count++;
+                    queue.offer(temp.right);
+                }
+            }
+        }
+        return root;
     }
 
     public String printStack(LinkedList stack){
@@ -47,48 +82,52 @@ public class Tree {
         return sb.reverse().toString();
     }
 
-    public String printTree(TreeNode root){
-        StringBuilder tree = new StringBuilder();
-        List level = new ArrayList();
-        List<List<TreeNode>> wholeTree = new ArrayList<List<TreeNode>>();
-        level.add(root);
-        while(level.size() > 0){
-            wholeTree.add(level);
-            List newLevel = new ArrayList();
-            for (int i = 0; i < level.size(); i++){
-                TreeNode node = (TreeNode) level.get(i);//节点可以为空。针对非全二叉树
-                if(node!=null){
-                    newLevel.add(node.left);
-                    newLevel.add(node.right);
-                }
-            }
-            level = newLevel;
+    public int maxDepth(TreeNode root) {
+        if(root==null){
+            return 0;
         }
-        int height = wholeTree.size();
-        for (int i = 0; i < height; i++){
-            level = wholeTree.get(i);
-            int tabNum = (int)(Math.pow(2, height - i - 1) - 1);
-            for (int j = 0; j < tabNum; j++){
-                tree.append("\t");
+        int depth=1;
+        depth+=Math.max(maxDepth(root.left),maxDepth(root.right));
+        return depth;
+    }
+
+    public void printTree(TreeNode root){
+        int depth=maxDepth(root);
+        //然后就是层次遍历，在打印每一层的节点之前和之后打印tab。子节点的位置根据父节点的位置计算。
+        if(root==null)
+            return;
+        Queue<TreeNode> queue=new LinkedList<TreeNode>();
+
+        HashMap<TreeNode,Integer> posMap=new HashMap<TreeNode, Integer>();//记录节点位置。
+        queue.offer(root);
+        int level=1,levelCount=1,nextlevelCount=0;//记录当前层号及层节点数
+        posMap.put(root,(int)Math.pow(2,depth-level));
+        while(!queue.isEmpty()){
+            TreeNode temp=queue.poll();
+            for(int i=0;i<posMap.get(temp);i++)
+                System.out.print("\t");
+            System.out.print(temp.val);
+
+            if(temp.left!=null){
+                nextlevelCount++;
+                posMap.put(temp.left,posMap.get(temp)-(int)Math.pow(2,depth-(level+1)));
+                queue.offer(temp.left);
+
             }
-            if(level.get(0)!=null)
-                tree.append(((TreeNode)level.get(0)).val+"\t") ;
-            else
-                tree.append("\t");
-            tabNum = (int) (Math.pow(2, height - i) - 1);
-            for (int j = 1; j < level.size(); j++){
-                for (int k = 0; k < tabNum; k++){
-                    tree.append("\t");
-                }
-                if(level.get(j)!=null)
-                    tree.append(((TreeNode)level.get(j)).val+"\t");
-                else
-                    tree.append("\t");
+            if(temp.right!=null){
+                nextlevelCount++;
+                posMap.put(temp.right,posMap.get(temp)+(int)Math.pow(2,depth-(level+1)));
+                queue.offer(temp.right);
             }
-            tree.append("\n");
+            levelCount--;
+            if (levelCount==0)//开始打印下一层
+            {
+                levelCount=nextlevelCount;
+                level++;
+                nextlevelCount=0;
+                System.out.println();
+            }
         }
-        System.out.println(tree);
-        return tree.toString();
     }
 
     public void DFS(TreeNode root){
