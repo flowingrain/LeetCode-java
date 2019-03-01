@@ -29,5 +29,6 @@ public class ListNode {
             pointer=pointer.next;
         }
         System.out.print(pointer.val);
+        System.out.println();
     }
 }
