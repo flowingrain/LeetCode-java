@@ -2,7 +2,7 @@ package LeetCode;
 
 public class L306_AdditiveNumber {
     private boolean isAdditiveNumber(String num,long num1,long num2){
-        System.out.println("\t"+num1+"\t"+num2);
+        //System.out.println("\t"+num1+"\t"+num2);
         long sum=num1+num2;
         String sumStr=String.valueOf(sum);
         if(num.startsWith(sumStr)) {
@@ -18,14 +18,14 @@ public class L306_AdditiveNumber {
         int len=num.length();
         if(num.length()<3)
             return false;
-        for(int i=1;i<=num.length()/2;i++)
+        for(int i=1;i<=num.length()/2;i++)//第一个数一定小于第三个数
         {
-            System.out.println("i:"+i);
+            //System.out.println("i:"+i);
             if(num.charAt(0)=='0'&&i>1)//i>1即第一个数位数>=2且以0开头
                 return false;
             temp1=Long.valueOf(num.substring(0,i));
             for(int j=i+1;j<=Math.min(len-i,(len+i)/2);j++){//len-j>=i&&len-j>=j-i
-                System.out.println("\tj:"+j);
+                //System.out.println("\tj:"+j);
                 if(num.charAt(i)=='0'&&j-i>=2)//个位数的话，可以为2；多位数的话，不能以2开头。下同
                     break;
                 if(num.charAt(j)=='0'&&len-j>=2)
