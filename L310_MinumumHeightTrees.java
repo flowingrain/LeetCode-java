@@ -8,9 +8,9 @@ public class L310_MinumumHeightTrees {
             return Collections.singletonList(0);//创建单个元素的List，最简单的方法，可以在其中创建不可变List的单个元素。也可以使用Arrays.asList创建，但创建的列表不是不可变的
         List<Set<Integer>> nodeEdges=new ArrayList<>(n);//每个节点的连接的有哪些节点。
         for(int i=0;i<n;i++)
-            nodeEdges.add(new HashSet<Integer>());
+            nodeEdges.add(new HashSet<Integer>());//创建节点连接集合
         for(int i=0;i<edges.length;i++){
-            nodeEdges.get(edges[i][0]).add(edges[i][1]);
+            nodeEdges.get(edges[i][0]).add(edges[i][1]);//记录与节点连接的节点
             nodeEdges.get(edges[i][1]).add(edges[i][0]);
         }
         List<Integer> leaves=new ArrayList<Integer>();
