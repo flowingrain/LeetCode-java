@@ -3,7 +3,7 @@ package LeetCode;
 public class M8_StringToInteger {
     public int myAtoi(String str) {
         str=str.trim();
-        int len=str.length(); 
+        int len=str.length();
         if(len==0)
             return 0;
         int start=0;
