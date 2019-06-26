@@ -24,6 +24,8 @@ public class ListNode {
     }
     public static void printList(ListNode head){
         ListNode pointer=head;
+        if(pointer==null)
+            return;
         while(pointer!=null&&pointer.next!=null){
             System.out.print(pointer.val+"->");
             pointer=pointer.next;
